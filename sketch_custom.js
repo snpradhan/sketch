@@ -10,38 +10,29 @@ $(function(){
     $('#'+id+'_tools').append("<a href='#"+id+"' class='eraser button-tool' data-tool='eraser'>Eraser</a> ");
     $('#'+id+'_tools').append("<a href='#"+id+"' class='line button-tool' data-tool='line'>Line</a> ");
     $('#'+id+'_tools').append("<a href='#"+id+"' class='rect button-tool' data-tool='rect'>Rectangle</a> ");
-  	$('#'+id+'_tools').append("<a href='#"+id+"' class='text button-tool' data-tool='text'>Text</a> ");
+    $('#'+id+'_tools').append("<a href='#"+id+"' class='text button-tool' data-tool='text'>Text</a> ");
     $('#'+id+'').sketch();
   });
-  
-  $('#_sketch_tools .button-tool').click(function(e) {
-        e.preventDefault()
-        
-        $that = $(this);
-        
-        $('#_sketch_tools a').removeClass('activeTool');
-        $that.addClass('activeTool');
-    });
-	
-	$('#_sketch_tools .button-size').click(function(e) {
-        e.preventDefault()
-        
-        $that = $(this);
-        
-        $('#_sketch_tools a').removeClass('activeSize');
-		$('#_sketch_tools a').removeClass('activeTool');
-        $that.addClass('activeSize');
-    });
-	
-	$('#_sketch_tools .button-color').click(function(e) {
-        e.preventDefault()
-        
-        $that = $(this);
-        
-        $('#_sketch_tools a').removeClass('popout').removeClass('activecolor');
-		$('#_sketch_tools a').removeClass('activeTool');
-        $that.addClass('popout').addClass('activecolor');
-    });
+
+  $('a.button-tool').click(function(e) {
+    e.preventDefault()
+    $('a.button-tool').removeClass('activeTool');
+    $(this).addClass('activeTool');
+  });
+
+  $('a.button-size').click(function(e) {
+    e.preventDefault()
+    $('a.button-size').removeClass('activeSize');
+    $('a.button-tool').removeClass('activeTool');
+    $(this).addClass('activeSize');
+  });
+
+  $('a.button-color').click(function(e) {
+    e.preventDefault()
+    $('a.button-color').removeClass('popout').removeClass('activecolor');
+    $('a.button-tool').removeClass('activeTool');
+    $(this).addClass('popout').addClass('activecolor');
+  });
 });
 
 /*
@@ -82,18 +73,21 @@ saveTextFromArea = function (y, x, fontsize, canvasId, color){
    $("#" + canvasId).sketch().redraw();
 }
 
-textArea = 	function (action, canvasId) {	
-   if ($('#textAreaPopUp').length > 0) {									
+textArea =  function (action, canvasId) {
+   if ($('#textAreaPopUp').length > 0) {
       $('textarea#textareaTest').remove();
       $('#saveText').remove();
       $('#textAreaPopUp').remove();
-   }		
-   var mouseX =action.events[0].x; 
+   }
+   var mouseX =action.events[0].x;
    var mouseY =action.events[0].y;
+   var textAreaX = window.event.pageX;
+   var textAreaY = window.event.pageY;
+
    var color = action.color;
    var fontsize = action.size * 2;
    //append a text area box to the canvas where the user clicked to enter in a comment
-   var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+mouseY+"px;left:"+mouseX+"px;z-index:30;'><textarea id='textareaTest' style='width:200px;height:50px;'></textarea>";
+   var textArea = "<div id='textAreaPopUp' style='position:absolute;top:"+textAreaY+"px;left:"+textAreaX+"px;z-index:30;'><textarea id='textareaTest' style='width:200px;height:50px;'></textarea>";
    var saveButton = "<input type='button' value='save' id='saveText' onclick='saveTextFromArea("+mouseY+","+mouseX+","+fontsize+",\""+canvasId+"\",\""+color+"\");'></div>";
    var appendString = textArea + saveButton;
    $("#" + canvasId).parent().append(appendString);

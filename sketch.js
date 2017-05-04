@@ -4,8 +4,7 @@ var __slice = Array.prototype.slice;
 (function($) {
   var Sketch;
 
-
-  // sketch 
+  // sketch
   $.fn.sketch = function() {
     var args, key, sketch;
     key = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
@@ -35,7 +34,6 @@ var __slice = Array.prototype.slice;
 
 
   Sketch = (function() {
-
 
     function Sketch(el, opts) {
 
@@ -80,10 +78,7 @@ var __slice = Array.prototype.slice;
           return false;
         });
       }
-      
-
     }
-
 
     // function to save drawing as a PNG
     Sketch.prototype.download = function(format) {
@@ -96,13 +91,11 @@ var __slice = Array.prototype.slice;
       return window.open(this.el.toDataURL(mime));
     };
 
-
     // no idea what this does???
     Sketch.prototype.set = function(key, value) {
       this[key] = value;
       return this.canvas.trigger("sketch.change" + key, value);
     };
-
 
     Sketch.prototype.startPainting = function() {
       this.painting = true;
@@ -115,8 +108,6 @@ var __slice = Array.prototype.slice;
       };
     };
 
-
-
     Sketch.prototype.stopPainting = function() {
       if (this.action) {
         this.actions.push(this.action);
@@ -125,8 +116,6 @@ var __slice = Array.prototype.slice;
       this.action = null;
       return this.redraw();
     };
-
-
 
     Sketch.prototype.onEvent = function(e) {
       if (e.originalEvent && e.originalEvent.targetTouches) {
@@ -138,11 +127,9 @@ var __slice = Array.prototype.slice;
       return false;
     };
 
-
-	
     Sketch.prototype.redraw = function() {
       var sketch;
-  		this.el.width = this.canvas.width();   //  this line triggers an erase event for the canvas
+      this.el.width = this.canvas.width();   //  this line triggers an erase event for the canvas
       this.context = this.el.getContext('2d');
       sketch = this;
       $.each(this.actions, function() {
@@ -162,27 +149,22 @@ var __slice = Array.prototype.slice;
       }
     };
 
-
     Sketch.prototype.addText = function(color, fontsize, textX, textY, textValue) {
       this.actions.push(
       {
         tool: "text",
         textX: textX,
         textY: textY,
-		color: color,
+    color: color,
         font: fontsize + "px sans-serif",
-		
+
         textValue: textValue,
-        alignment: "left"    
+        alignment: "left"
       });
     };
 
-
-
     return Sketch;
   })();
-
-
 
   $.sketch = {
     tools: {}
@@ -284,12 +266,12 @@ var __slice = Array.prototype.slice;
   };
 
   $.sketch.tools.text = {
-	  onEvent: function(e) {
-      return $.sketch.tools.marker.onEvent.call(this, e);	 
+    onEvent: function(e) {
+      return $.sketch.tools.marker.onEvent.call(this, e);
     },
     draw: function(action) {
-  	  return textArea(action, this.el.id);	
-  	}  
+      return textArea(action, this.el.id);
+    }
   };
 
 })(jQuery);
